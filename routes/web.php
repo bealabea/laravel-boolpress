@@ -21,3 +21,7 @@ Auth::routes();
 
 Route::get('/admin', 'Admin\HomeController@index')->name('admin.home');
 
+
+Route::get("{any?}", function() {
+    return view("/welcome");
+})->where("any", ".*");
