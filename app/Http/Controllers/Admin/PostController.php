@@ -16,7 +16,7 @@ class PostController extends Controller
      */
     public function index()
     {
-        $postsList = Post::all(); 
+        $postsList = Post::all();
         return view('admin.posts.index', compact('postsList'));
     }
 
@@ -39,26 +39,27 @@ class PostController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate(
-   [
-            "title" => "required|min:5",
-            "content" => "required|min:10"
-          ]);
-          $post = new Post();
-          $post->fill($data);
+            [
+                "title" => "required|min:5",
+                "content" => "required|min:10"
+            ]
+        );
+        $post = new Post();
+        $post->fill($data);
 
         $slug = Str::slug($post->title);
         $exists = Post::where("slug", $slug)->first();
         $count = 1;
 
         while ($exists) {
-        $newSlug = $slug . "-" . $count;
-        $count++;
+            $newSlug = $slug . "-" . $count;
+            $count++;
 
-        $exists = Post::where("slug", $newSlug)->first();
+            $exists = Post::where("slug", $newSlug)->first();
 
-        if (!$exists) {
-            $slug = $newSlug;
-        }
+            if (!$exists) {
+                $slug = $newSlug;
+            }
         }
 
         $post->slug = $slug;
@@ -74,11 +75,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($slug) {
-        $post = Post::where("slug", $slug)->first();
+    public function show($slug)
+    {
+        $post = Post::where("slug", $slug)->firstOrFail();
 
         return view("admin.posts.show", compact("post"));
-        }
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -88,7 +90,7 @@ class PostController extends Controller
      */
     public function edit($slug)
     {
-        $post = Post::where("slug", $slug)->first();
+        $post = Post::where("slug", $slug)->firstOrFail();
 
         return view('admin.posts.edit', compact('post'));
     }
@@ -103,12 +105,18 @@ class PostController extends Controller
     public function update(Request $request, $slug)
     {
         $data = $request->validate(
-        [
-        "title" => "required|min:5",
-        "content" => "required|min:10"
-        ]);
+            [
+                "title" => "required|min:5",
+                "content" => "required|min:10"
+            ]
+        );
 
-        $post = Post::where("slug", $slug)->first();
+        $post = Post::where("slug", $slug)->firstOrFail();
+
+        if ($data["title"] !== $post->title) {
+            $data["slug"] = $this->generateUniqueSlug($data["title"]);
+        }
+
         $post->update($data);
         return redirect()->route('admin.post.index');
     }
@@ -121,10 +129,32 @@ class PostController extends Controller
      */
     public function destroy($slug)
     {
-        $post = Post::where("slug", $slug)->first();
+        $post = Post::where("slug", $slug)->firstOrFail();
         $post->delete();
         return redirect()->route('admin.posts.index');
     }
+
+    protected function generateUniqueSlug($postTitle)
+    {
+
+        $slug = Str::slug($postTitle);
+
+
+        $exists = Post::where("slug", $slug)->first();
+        $counter = 1;
+
+
+        while ($exists) {
+            $newSlug = $slug . "-" . $counter;
+            $counter++;
+
+            $exists = Post::where("slug", $newSlug)->first();
+
+            if (!$exists) {
+                $slug = $newSlug;
+            }
+        }
+
+        return $slug;
+    }
 }
-
-
