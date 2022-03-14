@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
@@ -26,7 +27,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.posts.create');
     }
 
     /**
@@ -37,7 +38,34 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate(
+   [
+            "title" => "required|min:5",
+            "content" => "required|min:10"
+          ]);
+          $post = new Post();
+          $post->fill($data);
+
+        $slug = Str::slug($post->title);
+        $exists = Post::where("slug", $slug)->first();
+        $count = 1;
+
+        while ($exists) {
+        $newSlug = $slug . "-" . $count;
+        $count++;
+
+        $exists = Post::where("slug", $newSlug)->first();
+
+        if (!$exists) {
+            $slug = $newSlug;
+        }
+        }
+
+        $post->slug = $slug;
+
+        $post->save();
+
+        return redirect()->route("admin.posts.index");
     }
 
     /**
@@ -46,10 +74,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
-    {
-        //
-    }
+    public function show($slug) {
+        $post = Post::where("slug", $slug)->first();
+
+        return view("admin.posts.show", compact("post"));
+        }
 
     /**
      * Show the form for editing the specified resource.
@@ -57,9 +86,11 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        $post = Post::where("slug", $slug)->first();
+
+        return view('admin.posts.edit', compact('post'));
     }
 
     /**
@@ -69,9 +100,17 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $slug)
     {
-        //
+        $data = $request->validate(
+        [
+        "title" => "required|min:5",
+        "content" => "required|min:10"
+        ]);
+
+        $post = Post::where("slug", $slug)->first();
+        $post->update($data);
+        return redirect()->route('admin.post.index');
     }
 
     /**
@@ -80,8 +119,12 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($slug)
     {
-        //
+        $post = Post::where("slug", $slug)->first();
+        $post->delete();
+        return redirect()->route('admin.posts.index');
     }
 }
+
+
