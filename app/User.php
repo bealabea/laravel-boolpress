@@ -44,8 +44,8 @@ class User extends Authenticatable
     }
 
     public function posts(){
-        // il nome della funzione è al singolare perchè è una relazione singolare con InfoUser
-        // questo model ha una relazione di molti (hasMAny()) con il model Post
+        // il nome della funzione è al plurale perchè è una relazione di uno a molti con Post
+        // questo model ha una relazione di uno a molti (hasMAny()) con il model Post
         // un utente può avere più Posts
         return $this->hasMany('App\Post');
     }

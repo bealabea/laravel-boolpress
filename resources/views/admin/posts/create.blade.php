@@ -27,6 +27,18 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                           @enderror
                         </div>
+
+                        <div class="mb-3">
+                          <label>Categoria</label>
+                          <select name="category_id" class="form-select">
+                            <option value="">-- nessuna categoria --</option>
+                            @foreach ($categories as $category)
+                              <option value="{{ $category->id }}"
+                                @if (old('category_id')=== $category->id) selected @endIf>
+                                {{ $category->genre }}</option>
+                            @endforeach
+                          </select>
+                        </div>
           
                         <div class="form-group">
                           <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Back</a>

@@ -14,6 +14,7 @@
                     <ul class="list-group">
                         @foreach ($postsList as $post)
                         <li class="list-group-item">{{$post->title}}</li>
+                    
                         <div>
                         <a href="{{ route('admin.posts.show', $post->slug) }}" class="btn btn-secondary">Show Post</a>
                         <a href="{{ route('admin.posts.edit', $post->slug) }}" class="btn btn-info">Modify Post</a>
@@ -21,6 +22,7 @@
                         @endforeach
                         
                     </ul>
+                    
                 </div>
             </div>
         </div>
