@@ -14,4 +14,10 @@ class Post extends Model
         // un post appartiene ad un solo Utente
         return $this->belongsTo('App\User');
     }
+    public function category(){
+        // il nome della funzione deve essere esplicativo
+        // tabella secondaria che APPARTIENE (belongsTo()) al model User (relazione di dipendenza)
+        // un post appartiene ad un solo Utente
+        return $this->belongsTo('App\Category');
+    }
 }

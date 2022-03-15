@@ -14,7 +14,7 @@
             {{ $post->content }}
 
             <div>{{$post->user->name}}</div>
-            {{-- <div>@dd($post->category)</div> --}}
+            <div>{{$post->category->genre}}</div>
 
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Back</a>
             <form action="{{route('admin.posts.destroy', $post->slug)}}" method="post">
