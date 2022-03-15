@@ -13,6 +13,8 @@
 
             {{ $post->content }}
 
+            <div>{{$post->user->name}}</div>
+
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Back</a>
             <form action="{{route('admin.posts.destroy', $post->slug)}}" method="post">
                 @csrf

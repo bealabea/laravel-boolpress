@@ -36,4 +36,18 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function infoUser(){
+        // il nome della funzione è al singolare perchè è una relazione singolare con InfoUser
+        // questo model ha una relazione di uno (hasOne()) con il model InfoUser
+        return $this->hasOne('App\InfoUser');
+    }
+
+    public function posts(){
+        // il nome della funzione è al singolare perchè è una relazione singolare con InfoUser
+        // questo model ha una relazione di molti (hasMAny()) con il model Post
+        // un utente può avere più Posts
+        return $this->hasMany('App\Post');
+    }
+
 }
