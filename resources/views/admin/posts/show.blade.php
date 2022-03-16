@@ -18,6 +18,13 @@
             <div>{{$post->category->genre}}</div>
             @endif
 
+            @if ($post->tags !== null)
+            Tag:
+            @foreach ($post->tags as $tag)
+            <div>-{{$tag->name}}-</div>
+            @endforeach
+            @endif
+
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Back</a>
             <form action="{{route('admin.posts.destroy', $post->slug)}}" method="post">
                 @csrf

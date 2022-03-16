@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 use App\Category;
 use App\Http\Controllers\Controller;
 use App\Post;
+use App\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -29,7 +30,8 @@ class PostController extends Controller
     public function create()
     {
         $categories = Category::all();
-        return view('admin.posts.create', compact('categories'));
+        $tags = Tag::all();
+        return view('admin.posts.create', compact('categories', 'tags'));
     }
 
     /**
@@ -44,7 +46,8 @@ class PostController extends Controller
             [
                 "title" => "required|min:5",
                 "content" => "required|min:10",
-                "category_id" => "nullable"
+                "category_id" => "nullable",
+                'tags' => "nullable"
             ]
         );
         $post = new Post();
@@ -70,6 +73,9 @@ class PostController extends Controller
         $post->user_id = Auth::user()->id;
         
         $post->save();
+
+         // aggiungo al post corrente le relazioni con i tag ricevuti
+        $post->tags()->attach($data['tags']);
 
         return redirect()->route("admin.posts.index");
     }
@@ -97,8 +103,9 @@ class PostController extends Controller
     {
         $post = Post::where("slug", $slug)->firstOrFail();
         $categories = Category::all();
+        $tags = Tag::all();
 
-        return view('admin.posts.edit', compact('post', 'categories'));
+        return view('admin.posts.edit', compact('post', 'categories', 'tags'));
     }
 
     /**
@@ -114,7 +121,8 @@ class PostController extends Controller
             [
                 "title" => "required|min:5",
                 "content" => "required|min:10",
-                "category_id" => "nullable"
+                "category_id" => "nullable",
+                'tags' => "nullable"
             ]
         );
 
@@ -125,6 +133,16 @@ class PostController extends Controller
         }
 
         $post->update($data);
+
+        // aggiorno tabella ponte post_tag invocando la funzione tags (belongstoMany su post)
+        // rimuovo dal post corrente tutte le relazioni esistenti con i tag
+        // $post->tags()->detach();
+        // aggiungo al post corrente le relazioni con i tag ricevuti
+        // $post->tags()->attach($data['tags']);
+
+        // il sync fa prima il detach(se necessario) e poi l'attach(se necessario)
+        $post->tags()->sync($data['tags']);
+
         return redirect()->route('admin.posts.index');
     }
 
@@ -137,10 +155,14 @@ class PostController extends Controller
     public function destroy($slug)
     {
         $post = Post::where("slug", $slug)->firstOrFail();
+
+        $post->tags()->detach();
         $post->delete();
+
         return redirect()->route('admin.posts.index');
     }
 
+    
     protected function generateUniqueSlug($postTitle)
     {
 

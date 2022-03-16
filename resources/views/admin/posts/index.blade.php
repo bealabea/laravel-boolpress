@@ -19,6 +19,13 @@
                             @if ($post->category !== null)
                             <div>Categoria: <i>{{$post->category->genre}}</i></div>
                             @endif
+
+                            @if ($post->tags !== null)
+                            Tag:
+                            @foreach ($post->tags as $tag)
+                            <span> <i> -{{$tag->name}}- </i> </span>
+                            @endforeach
+                            @endif
                         </li>
                        
                     
