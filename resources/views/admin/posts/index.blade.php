@@ -13,26 +13,27 @@
                 <div class="card-body">
                     <ul class="list-group">
                         @foreach ($postsList as $post)
-                        <li class="list-group-item">
-                            <h4>{{$post->title}}</h4>
-                            <div>Autore: {{$post->user->name}}</div>
-                            @if ($post->category !== null)
-                            <div>Categoria: <i>{{$post->category->genre}}</i></div>
-                            @endif
+                            <li class="list-group-item">
+                                <h4>{{$post->title}}</h4>
+                                <div>Autore: {{$post->user->name}}</div>
+                                @if ($post->category !== null)
+                                <div>Categoria: <i>{{$post->category->genre}}</i></div>
+                                @endif
 
-                            @if ($post->tags !== null)
-                            Tag:
-                            @foreach ($post->tags as $tag)
-                            <span> <i> -{{$tag->name}}- </i> </span>
-                            @endforeach
-                            @endif
-                        </li>
-                       
-                    
-                        <div>
-                        <a href="{{ route('admin.posts.show', $post->slug) }}" class="btn btn-secondary">Show Post</a>
-                        <a href="{{ route('admin.posts.edit', $post->slug) }}" class="btn btn-info">Modify Post</a>
-                        </div>
+                               
+                                Tag:
+                                @forelse ($post->tags as $tag )
+                                <span class="badge bg-dark"> <i> -{{$tag->name}}- </i> </span>
+                                @empty
+                                <span><i> undefined </i></span>
+                                @endforelse
+                            </li>
+                        
+                        
+                            <div>
+                            <a href="{{ route('admin.posts.show', $post->slug) }}" class="btn btn-secondary">Show Post</a>
+                            <a href="{{ route('admin.posts.edit', $post->slug) }}" class="btn btn-info">Modify Post</a>
+                            </div>
                         @endforeach
                         
                     </ul>

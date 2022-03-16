@@ -74,8 +74,9 @@ class PostController extends Controller
         
         $post->save();
 
-         // aggiungo al post corrente le relazioni con i tag ricevuti
-        $post->tags()->attach($data['tags']);
+        if (key_exists("tags", $data)) {     
+        $post->tags()->attach($data["tags"]);
+        }
 
         return redirect()->route("admin.posts.index");
     }
@@ -133,16 +134,19 @@ class PostController extends Controller
         }
 
         $post->update($data);
-        if (key_exists("tags", $data)) {  
-        // aggiorno tabella ponte post_tag invocando la funzione tags (è la funzione belongstoMany su post)
+
+        if (key_exists("tags", $data)) {   
+            $post->tags()->sync($data["tags"]);
+        } else {
+            $post->tags()->detach(); 
+        }
+          // aggiorno tabella ponte post_tag invocando la funzione tags (è la funzione belongstoMany su post)
         // rimuovo dal post corrente tutte le relazioni esistenti con i tag
         // $post->tags()->detach();
         // aggiungo al post corrente le relazioni con i tag ricevuti
         // $post->tags()->attach($data['tags']);
 
-        // il sync fa prima il detach(se necessario) e poi l'attach(se necessario)    
-            $post->tags()->sync($data["tags"]);
-          }
+        // il sync fa prima il detach(se necessario) e poi l'attach(se necessario) 
 
 
         return redirect()->route('admin.posts.index');

@@ -19,11 +19,11 @@
             @endif
 
             <div class="mb-3">
-              @if ($post->tags !== null)
-              @foreach ($post->tags as $tag)
-              <span class="text-secondary fs-6"><i> -{{$tag->name}}- </i></span>
-              @endforeach
-              @endif
+              @forelse ($post->tags as $tag )
+              <span class="badge bg-secondary"> <i> -{{$tag->name}}- </i> </span>
+              @empty
+              <span><i> undefined </i></span>
+              @endforelse
             </div>
 
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Back</a>
