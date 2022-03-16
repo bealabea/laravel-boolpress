@@ -96,8 +96,9 @@ class PostController extends Controller
     public function edit($slug)
     {
         $post = Post::where("slug", $slug)->firstOrFail();
+        $categories = Category::all();
 
-        return view('admin.posts.edit', compact('post'));
+        return view('admin.posts.edit', compact('post', 'categories'));
     }
 
     /**
@@ -124,7 +125,7 @@ class PostController extends Controller
         }
 
         $post->update($data);
-        return redirect()->route('admin.post.index');
+        return redirect()->route('admin.posts.index');
     }
 
     /**

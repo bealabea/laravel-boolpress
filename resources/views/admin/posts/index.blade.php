@@ -13,7 +13,12 @@
                 <div class="card-body">
                     <ul class="list-group">
                         @foreach ($postsList as $post)
-                        <li class="list-group-item">{{$post->title}}</li>
+                        <li class="list-group-item">
+                            <h4>{{$post->title}}</h4>
+                            <div>Autore: {{$post->user->name}}</div>
+                            <div>Categoria: <i>{{$post->category->genre}}</i></div>
+                        </li>
+                       
                     
                         <div>
                         <a href="{{ route('admin.posts.show', $post->slug) }}" class="btn btn-secondary">Show Post</a>
