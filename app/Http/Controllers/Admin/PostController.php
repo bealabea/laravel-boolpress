@@ -122,7 +122,7 @@ class PostController extends Controller
                 "title" => "required|min:5",
                 "content" => "required|min:10",
                 "category_id" => "nullable",
-                'tags' => "nullable"
+                'tags' => "nullable|exists:tags,id"
             ]
         );
 
@@ -133,15 +133,17 @@ class PostController extends Controller
         }
 
         $post->update($data);
-
-        // aggiorno tabella ponte post_tag invocando la funzione tags (belongstoMany su post)
+        if (key_exists("tags", $data)) {  
+        // aggiorno tabella ponte post_tag invocando la funzione tags (è la funzione belongstoMany su post)
         // rimuovo dal post corrente tutte le relazioni esistenti con i tag
         // $post->tags()->detach();
         // aggiungo al post corrente le relazioni con i tag ricevuti
         // $post->tags()->attach($data['tags']);
 
-        // il sync fa prima il detach(se necessario) e poi l'attach(se necessario)
-        $post->tags()->sync($data['tags']);
+        // il sync fa prima il detach(se necessario) e poi l'attach(se necessario)    
+            $post->tags()->sync($data["tags"]);
+          }
+
 
         return redirect()->route('admin.posts.index');
     }
