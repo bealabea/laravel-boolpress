@@ -16,7 +16,9 @@
                         <li class="list-group-item">
                             <h4>{{$post->title}}</h4>
                             <div>Autore: {{$post->user->name}}</div>
+                            @if ($post->category !== null)
                             <div>Categoria: <i>{{$post->category->genre}}</i></div>
+                            @endif
                         </li>
                        
                     

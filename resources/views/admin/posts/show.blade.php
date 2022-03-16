@@ -14,7 +14,9 @@
             {{ $post->content }}
 
             <div>{{$post->user->name}}</div>
+            @if ($post->category !== null)
             <div>{{$post->category->genre}}</div>
+            @endif
 
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Back</a>
             <form action="{{route('admin.posts.destroy', $post->slug)}}" method="post">
