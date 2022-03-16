@@ -6,27 +6,28 @@
       <div class="col-md-8">
         <div class="card">
           <div class="card-header d-flex">
-            {{ $post->title }}
+            <h3>{{ $post->title }}</h3>
           </div>
 
           <div class="card-body">
 
-            {{ $post->content }}
+            <div class="mb-3 fs-4">{{ $post->content }}</div>
 
-            <div>{{$post->user->name}}</div>
+            <div class="mb-3">{{$post->user->name}}</div>
             @if ($post->category !== null)
-            <div>{{$post->category->genre}}</div>
+            <div class="text-secondary fs-6"><i> {{$post->category->genre}} </i></div>
             @endif
 
-            @if ($post->tags !== null)
-            Tag:
-            @foreach ($post->tags as $tag)
-            <div>-{{$tag->name}}-</div>
-            @endforeach
-            @endif
+            <div class="mb-3">
+              @if ($post->tags !== null)
+              @foreach ($post->tags as $tag)
+              <span class="text-secondary fs-6"><i> -{{$tag->name}}- </i></span>
+              @endforeach
+              @endif
+            </div>
 
             <a href="{{ route('admin.posts.index') }}" class="btn btn-secondary">Back</a>
-            <form action="{{route('admin.posts.destroy', $post->slug)}}" method="post">
+            <form class="d-inline-block" action="{{route('admin.posts.destroy', $post->slug)}}" method="post">
                 @csrf
                 @method('delete')
               
