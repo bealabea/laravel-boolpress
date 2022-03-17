@@ -35,7 +35,7 @@ class Post extends Model
         if($this->updated_at->diffInHours(Carbon::now()) <= 12){
                 return $this->updated_at->diffForHumans(Carbon::now());
         }else{ 
-               return $this->updated_at->dateFormat($this->updated_at);
+               return $this->dateFormat($this->updated_at);
         }
     }
 

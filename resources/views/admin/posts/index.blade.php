@@ -1,10 +1,5 @@
 @extends('layouts.app')
 
-@php
-    use Carbon\Carbon;
-   $date= 'd-m-Y H:i';
-@endphp
-
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -21,20 +16,13 @@
                             <li class="list-group-item">
                                 <h4>{{$post->title}}</h4>
                                 <div>Author: {{$post->user->name}}</div>
-                                <div>Creation date: {{$post->created_at->format($date)}}</div>
-                                <div>Last edit: 
-                                    @if($post->updated_at->diffInHours(Carbon::now()) <= 12)
-                                    {{$post->updated_at->diffForHumans(Carbon::now())}}
-                                    @else 
-                                    {{$post->updated_at->format($date)}}
-                                    @endif
-                                </div>
+                                <div>Creation date: {{$post->printCreateAt()}}</div>
+                                <div>Last edit: {{$post->printUpdateAt()}}</div>
 
                                 @if ($post->category !== null)
                                 <div>Category: <i>{{$post->category->genre}}</i></div>
                                 @endif
 
-                               
                                 Tag:
                                 @forelse ($post->tags as $tag )
                                 <span class="badge bg-dark"> <i> -{{$tag->name}}- </i> </span>
