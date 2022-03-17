@@ -5,6 +5,7 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\Tag;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
@@ -173,18 +174,13 @@ class PostController extends Controller
     {
 
         $slug = Str::slug($postTitle);
-
-
         $exists = Post::where("slug", $slug)->first();
         $counter = 1;
-
 
         while ($exists) {
             $newSlug = $slug . "-" . $counter;
             $counter++;
-
             $exists = Post::where("slug", $newSlug)->first();
-
             if (!$exists) {
                 $slug = $newSlug;
             }
@@ -192,4 +188,7 @@ class PostController extends Controller
 
         return $slug;
     }
+
 }
+
+

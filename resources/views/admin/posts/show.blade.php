@@ -1,10 +1,5 @@
 @extends('layouts.app')
 
-@php
-    use Carbon\Carbon;
-   $date= 'd-m-Y H:i';
-@endphp
-
 @section('content')
   <div class="container">
     <div class="row justify-content-center">
@@ -24,16 +19,10 @@
             @endif
 
             <div class="text-secondary fs-6">
-              <i>Creation date: {{$post->created_at->format($date)}} </i>
+              <i>Creation date: {{$post->printCreateAt()}} </i>
             </div>
             <div class="text-secondary fs-6">
-              <i>Last edit: 
-                @if($post->updated_at->diffInHours(Carbon::now()) <= 12)
-                {{$post->updated_at->diffForHumans(Carbon::now())}}
-                @else 
-                {{$post->updated_at->format($date)}}
-                @endif
-              </i>
+              <i>Last edit: {{$post->printUpdateAt()}}</i>
             </div>
 
             <div class="mb-3">
