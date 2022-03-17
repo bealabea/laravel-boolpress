@@ -1,5 +1,10 @@
 @extends('layouts.app')
 
+@php
+    use Carbon\Carbon;
+   $date= 'd-m-Y H:i';
+@endphp
+
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
@@ -15,9 +20,18 @@
                         @foreach ($postsList as $post)
                             <li class="list-group-item">
                                 <h4>{{$post->title}}</h4>
-                                <div>Autore: {{$post->user->name}}</div>
+                                <div>Author: {{$post->user->name}}</div>
+                                <div>Creation date: {{$post->created_at->format($date)}}</div>
+                                <div>Last edit: 
+                                    @if($post->updated_at->diffInHours(Carbon::now()) <= 12)
+                                    {{$post->updated_at->diffForHumans(Carbon::now())}}
+                                    @else 
+                                    {{$post->updated_at->format($date)}}
+                                    @endif
+                                </div>
+
                                 @if ($post->category !== null)
-                                <div>Categoria: <i>{{$post->category->genre}}</i></div>
+                                <div>Category: <i>{{$post->category->genre}}</i></div>
                                 @endif
 
                                
@@ -27,12 +41,15 @@
                                 @empty
                                 <span><i> undefined </i></span>
                                 @endforelse
+
+                                
                             </li>
-                        
+                            
+
                         
                             <div>
                             <a href="{{ route('admin.posts.show', $post->slug) }}" class="btn btn-secondary">Show Post</a>
-                            <a href="{{ route('admin.posts.edit', $post->slug) }}" class="btn btn-info">Modify Post</a>
+                            <a href="{{ route('admin.posts.edit', $post->slug) }}" class="btn btn-info">Edit Post</a>
                             </div>
                         @endforeach
                         
