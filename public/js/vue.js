@@ -1925,21 +1925,27 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  components: {
-    data: function data() {
-      return {
-        posts: []
-      };
-    }
+  components: {},
+  data: function data() {
+    return {
+      posts: []
+    };
   },
   methods: {
     getPosts: function getPosts() {
       var _this = this;
 
-      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('http://127.0.0.1:8000/api/posts').then(function (response) {
-        _this.posts = response.data.data;
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get("http://127.0.0.1:8000/api/posts").then(function (response) {
+        _this.posts = response.data;
         console.log(_this.posts);
       });
     }
@@ -2434,44 +2440,54 @@ var render = function () {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("h1", [_vm._v("CIAONE")]),
-      _vm._v(" "),
+  return _c("div", [
+    _c(
+      "div",
+      { staticClass: "row justify-content-center row-cols-1 row-cols-md-2" },
       _vm._l(_vm.posts, function (post) {
-        return _c(
-          "div",
-          {
-            key: post.id,
-            staticClass: "card",
-            staticStyle: { width: "18rem" },
-          },
-          [
-            _c("img", {
-              staticClass: "card-img-top",
-              attrs: { src: "", alt: "..." },
+        return _c("div", { key: post.id, staticClass: "card m-2" }, [
+          _c("div", { staticClass: "card-body" }, [
+            _c("h5", { staticClass: "card-title" }, [
+              _vm._v(_vm._s(post.title)),
+            ]),
+            _vm._v(" "),
+            _c("p", {
+              staticClass: "card-text",
+              domProps: { innerHTML: _vm._s(post.content) },
             }),
             _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
-              _c("h5", { staticClass: "card-title" }, [
-                _vm._v(_vm._s(post.title)),
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "card-text" }, [
-                _vm._v(
-                  "\n                " + _vm._s(post.content) + "\n            "
-                ),
-              ]),
+            _c("em", [
+              _vm._v(
+                "Autore: " +
+                  _vm._s(post.user.name) +
+                  ";\n                    Data: " +
+                  _vm._s(post.created_at)
+              ),
             ]),
-          ]
-        )
+            _c("br"),
+            _vm._v(" "),
+            post.category
+              ? _c("strong", [_vm._v(_vm._s(post.category.genre))])
+              : _vm._e(),
+          ]),
+          _vm._v(" "),
+          _vm._m(0, true),
+        ])
       }),
-    ],
-    2
-  )
+      0
+    ),
+  ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function () {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-footer" }, [
+      _c("a", { attrs: { href: "#" } }, [_vm._v("Dettagli")]),
+    ])
+  },
+]
 render._withStripped = true
 
 
