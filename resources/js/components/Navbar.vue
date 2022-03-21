@@ -1,0 +1,61 @@
+<template>
+    <div>
+        <nav class="navbar navbar-dark bg-dark navbar-expand-md shadow">
+            <!-- container navbar -->
+            <div class="container">
+                <a class="navbar-brand" href="/">Boolpress</a>
+
+                <button
+                    class="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContent"
+                    aria-bs-controls="navbarSupportedContent"
+                    aria-bs-expanded="false"
+                >
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div
+                    class="collapse navbar-collapse"
+                    id="navbarSupportedContent"
+                >
+                    <!-- /Left Side Of Navbar -->
+
+                    <!-- Right Side Of Navbar -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item" v-for="route in routes" :key="route.path"
+                        >
+                            <router-link
+                                :to="!route.path ? '/' : route.path"
+                                class="nav-link"
+                            >
+                                {{ route.meta.linkText }}
+                            </router-link>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/login">Admin</a>
+                        </li>
+                    </ul>
+                    <!-- /Right Side Of Navbar -->
+                </div>
+            </div>
+            <!-- /container navbar -->
+        </nav>
+    </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      routes: [],
+    };
+  },
+  mounted() {
+    this.routes = this.$router.getRoutes().filter((route) => !!route.meta.linkText);
+  },
+};
+</script>
+
+<style></style>

@@ -47,7 +47,8 @@ class PostController extends Controller
                 "title" => "required|min:5",
                 "content" => "required|min:10",
                 "category_id" => "nullable",
-                'tags' => "nullable"
+                'tags' => "nullable",
+                'image' => "nullable"
             ]
         );
         $post = new Post();
@@ -123,7 +124,8 @@ class PostController extends Controller
                 "title" => "required|min:5",
                 "content" => "required|min:10",
                 "category_id" => "nullable",
-                'tags' => "nullable|exists:tags,id"
+                'tags' => "nullable|exists:tags,id",
+                'image' => "nullable"
             ]
         );
 

@@ -19,6 +19,15 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                           @enderror
                         </div>
+
+                        <div class="mb-3">
+                          <label>Image</label>
+                          <input type="url" name="image" class="form-control @error('image') is-invalid @enderror"
+                            placeholder="https://example.com" value="{{ old('image', $post->image) }}">
+                          @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                          @enderror
+                        </div>
           
                         <div class="mb-3">
                           <label>Content</label>

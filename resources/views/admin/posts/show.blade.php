@@ -10,7 +10,7 @@
           </div>
 
           <div class="card-body">
-            {{-- <img src="{{$post->image}}" alt=""> --}}
+              <img class="img-fluid" src="{{$post->image}}" alt="">
             <div class="mb-3 fs-4">{{ $post->content }}</div>
 
             <div class="mb-3">{{$post->user->name}}</div>

@@ -13,13 +13,15 @@ class TagsTableSeeder extends Seeder
      */
     public function run()
     {
-        $tags= ['carne', 'pesce', 'vegetariano', 'vegano', 'senza lattosio', 'senza glutine'];
+      $tags= ['recommended', 'not recommended', 'scary', 'boring', 'funny', 'engaging'];
+
       foreach ($tags as $tag) {
         $newTag = new Tag();
         $newTag->name = $tag;
         $newTag->slug = Str::slug($tag);
         $newTag->save();
     }
+      
 }
 
 }

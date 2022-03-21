@@ -28,7 +28,8 @@ class PostController extends Controller {
         "title" => "required|min:5",
         "content" => "required|min:10",
         "category_id" => "nullable",
-        'tags' => "nullable"
+        'tags' => "nullable",
+        'image' => "nullable"
     ]);
 
     $newPost = new Post();
@@ -44,9 +45,14 @@ class PostController extends Controller {
     return response()->json($newPost);
   }
 
-  public function show($id){
-    $post = Post::where("id", $id)->with(["tags", "user", "category"])->first();
-    // $post = Post::where("id", $id)->first();
+  public function show($slug) {
+    $post = Post::where("slug", $slug)
+      ->with(["tags", "user", "category"])
+      ->firstOrFail();
+
+    if (!$post) {
+      abort(404);
+    }
 
     return response()->json($post);
   }
