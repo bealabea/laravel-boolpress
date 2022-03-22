@@ -1,7 +1,10 @@
 <template>
+<div>
+    <h1>CineBlog</h1>
     <div class="row">
         <PostCard v-for="post of posts" :key="post.id" :post="post"> </PostCard>
     </div>
+</div>
 </template>
 
 <script>

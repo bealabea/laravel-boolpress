@@ -1,12 +1,12 @@
 <template>
-    <div class="col-12 col-lg-4">
+  <div class="col-12 col-lg-4">
         <div class="card post-card m-2 text_card">
             <div class="card-body bg-dark rounded">
                 <img class="img-fluid rounded" :src="post.image" alt="" />
                 <h5 class="card-title mt-4">{{ post.title }}</h5>
 
                 <em>Autore: {{ post.user.name }}<br />
-                    Data: {{ post.created_at }}</em><br />
+                    Data: {{ dateFormat(post.created_at) }}</em><br />
                 <strong v-if="post.category">{{ post.category.genre }}</strong>
 
                 <div class="mt-3 pt-3 border-top border-secondary"> 
@@ -21,6 +21,8 @@
 </template>
 
 <script>
+import dayjs from "dayjs";
+
 export default {
     props: {
         post: Object,
@@ -28,17 +30,30 @@ export default {
     data() {
         return {};
     },
-    methods: {},
+    methods: {
+        dateFormat(date) {
+        return dayjs(date).format("DD/MM/YYYY HH:mm");
+    }
+    },
     mounted() {},
 };
 </script>
 
 <style lang="scss" scoped>
+.card{
+    transform: scale(1.0);
+    transition: all 0.5s;
+    &:hover {
+        transform: scale(1.1) translate(0%, 10%);
+        transition: all 0.5s;
+    }
+}
 .text_card{
      color: #aabbc3;
 }
 .details-link {
     color: #b3c0c7;
     text-decoration: none;
+    cursor: pointer;
 }
 </style>
