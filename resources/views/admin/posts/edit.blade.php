@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex">Modify post</div>
                 <div class="card-body">
-                  <form action="{{ route('admin.posts.update', $post->slug) }}" method="post">
+                  <form action="{{ route('admin.posts.update', $post->slug) }}" method="post" enctype="multipart/form-data">
                     @csrf
                     @method('put')
           
@@ -20,10 +20,18 @@
                           @enderror
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                           <label>Image</label>
                           <input type="url" name="image" class="form-control @error('image') is-invalid @enderror"
                             placeholder="https://example.com" value="{{ old('image', $post->image) }}">
+                          @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                          @enderror
+                        </div> --}}
+                        <div class="mb-3">
+                          <label>Image</label>
+                          <input type="file" name="image" class="form-control @error('image') is-invalid @enderror"
+                            placeholder="https://example.com">
                           @error('image')
                             <div class="invalid-feedback">{{ $message }}</div>
                           @enderror

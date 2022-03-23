@@ -1920,6 +1920,8 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -1966,6 +1968,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -1977,8 +1980,11 @@ __webpack_require__.r(__webpack_exports__);
     getUser: function getUser() {
       var _this = this;
 
-      axios.get('/api/user').then(function (resp) {
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.get('/api/user').then(function (resp) {
+        console.log(resp.data);
         _this.user = resp.data;
+      })["catch"](function (er) {
+        console.error("utente non loggato");
       });
     }
   },
@@ -2111,6 +2117,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
@@ -2119,7 +2138,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       formData: {
         name: "",
         email: "",
-        message: ""
+        message: "",
+        attachment: null
       }
     };
   },
@@ -2128,34 +2148,43 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this = this;
 
       return _asyncToGenerator( /*#__PURE__*/_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
-        var resp;
+        var formDataInstance, resp;
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
-                _context.next = 3;
-                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/contacts", _this.formData);
+                formDataInstance = new FormData();
+                formDataInstance.append('name', _this.formData.name);
+                formDataInstance.append('email', _this.formData.email);
+                formDataInstance.append('message', _this.formData.message);
+                formDataInstance.append('attachment', _this.formData.attachment);
+                _context.next = 8;
+                return axios__WEBPACK_IMPORTED_MODULE_1___default.a.post("/api/contacts", formDataInstance);
 
-              case 3:
+              case 8:
                 resp = _context.sent;
                 _this.formSubmitted = true;
                 resp.data;
-                _context.next = 11;
+                _context.next = 16;
                 break;
 
-              case 8:
-                _context.prev = 8;
+              case 13:
+                _context.prev = 13;
                 _context.t0 = _context["catch"](0);
                 alert('errore, non è possibile inviare la richiesta!');
 
-              case 11:
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 8]]);
+        }, _callee, null, [[0, 13]]);
       }))();
+    },
+    onAttachmentChange: function onAttachmentChange(event) {
+      // event.target.files leggiamo elenco dei files scelti dall'utente
+      this.formData.attachment = event.target.files[0];
     }
   }
 });
@@ -2349,7 +2378,7 @@ exports = module.exports = __webpack_require__(/*! ../../../node_modules/css-loa
 
 
 // module
-exports.push([module.i, ".card[data-v-1324358a] {\n  transform: scale(1);\n  transition: all 0.5s;\n}\n.card[data-v-1324358a]:hover {\n  transform: scale(1.1) translate(0%, 10%);\n  transition: all 0.5s;\n}\n.text_card[data-v-1324358a] {\n  color: #aabbc3;\n}\n.details-link[data-v-1324358a] {\n  color: #b3c0c7;\n  text-decoration: none;\n  cursor: pointer;\n}", ""]);
+exports.push([module.i, ".card[data-v-1324358a] {\n  transform: scale(1);\n  transition: all 0.5s;\n}\n.card[data-v-1324358a]:hover {\n  transform: scale(1.1);\n  transition: all 0.5s;\n}\n.text_card[data-v-1324358a] {\n  color: #aabbc3;\n}\n.details-link[data-v-1324358a] {\n  color: #b3c0c7;\n  text-decoration: none;\n  cursor: pointer;\n}", ""]);
 
 // exports
 
@@ -4589,6 +4618,27 @@ var render = function () {
                   _vm.$set(_vm.formData, "message", $event.target.value)
                 },
               },
+            }),
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "mb-3" }, [
+            _c(
+              "label",
+              {
+                staticClass: "form-label",
+                attrs: { for: "exampleFormControlInput3" },
+              },
+              [_vm._v("Allegato")]
+            ),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: {
+                type: "file",
+                id: "exampleFormControlInput3",
+                placeholder: "Name-Surname",
+              },
+              on: { change: _vm.onAttachmentChange },
             }),
           ]),
           _vm._v(" "),
@@ -20540,7 +20590,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-router */ "./node_modules/vue-router/dist/vue-router.esm.js");
 /* harmony import */ var _pages_Home_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./pages/Home.vue */ "./resources/js/pages/Home.vue");
-/* harmony import */ var _pages_Error_vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./pages/Error.vue */ "./resources/js/pages/Error.vue");
+/* harmony import */ var _pages_Error_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./pages/Error.vue */ "./resources/js/pages/Error.vue");
 /* harmony import */ var _pages_Contacts_vue__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./pages/Contacts.vue */ "./resources/js/pages/Contacts.vue");
 /* harmony import */ var _pages_posts_Show_vue__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./pages/posts/Show.vue */ "./resources/js/pages/posts/Show.vue");
 
@@ -20577,7 +20627,7 @@ var router = new vue_router__WEBPACK_IMPORTED_MODULE_1__["default"]({
     }
   }, {
     path: "*",
-    component: _pages_Error_vue__WEBPACK_IMPORTED_MODULE_6__["default"],
+    component: _pages_Error_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     name: "error"
   }]
 });

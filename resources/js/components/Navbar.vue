@@ -45,6 +45,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   data() {
     return {
@@ -56,7 +58,10 @@ export default {
       getUser() {
           axios.get('/api/user')
           .then(resp => {
+              console.log(resp.data);
             this.user = resp.data;
+          }).catch((er) => {
+              console.error("utente non loggato")
           });
       }
   },

@@ -5,12 +5,15 @@ use App\Category;
 use App\Http\Controllers\Controller;
 use App\Post;
 use App\Tag;
+use App\Traits\SlugGenerator;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
 {
+    use SlugGenerator;
     /**
      * Display a listing of the resource.
      *
@@ -48,31 +51,20 @@ class PostController extends Controller
                 "content" => "required|min:10",
                 "category_id" => "nullable",
                 'tags' => "nullable",
-                'image' => "nullable"
+                'image' => "nullable|max:10000"
             ]
         );
         $post = new Post();
         
         $post->fill($data);
-        $slug = Str::slug($post->title);
-        $exists = Post::where("slug", $slug)->first();
-        $count = 1;
-
-        while ($exists) {
-            $newSlug = $slug . "-" . $count;
-            $count++;
-
-            $exists = Post::where("slug", $newSlug)->first();
-
-            if (!$exists) {
-                $slug = $newSlug;
-            }
-        }
-
-        $post->slug = $slug;
-
-        $post->user_id = Auth::user()->id;
         
+        $post->slug=$this->generateUniqueSlug($post->title);
+        
+        $post->user_id = Auth::user()->id;
+
+        if(key_exists('image', $data)) {
+            $post->image = Storage::put('postImages', $data['image']);
+        }
         $post->save();
 
         if (key_exists("tags", $data)) {     
@@ -125,7 +117,7 @@ class PostController extends Controller
                 "content" => "required|min:10",
                 "category_id" => "nullable",
                 'tags' => "nullable|exists:tags,id",
-                'image' => "nullable"
+                'image' => "nullable|max:10000"
             ]
         );
 
@@ -136,6 +128,14 @@ class PostController extends Controller
         }
 
         $post->update($data);
+
+        if(key_exists('image', $data)) {
+            if($post->image){
+                Storage::delete($post->image);  
+            }
+            $post->image = Storage::put('postImages', $data['image']);
+            $post->save();
+        }
 
         if (key_exists("tags", $data)) {   
             $post->tags()->sync($data["tags"]);
@@ -165,29 +165,14 @@ class PostController extends Controller
         $post = Post::where("slug", $slug)->firstOrFail();
 
         $post->tags()->detach();
+
+        if($post->image){
+            Storage::delete($post->image);  
+        }
+        
         $post->delete();
 
         return redirect()->route('admin.posts.index');
-    }
-
-    
-    protected function generateUniqueSlug($postTitle)
-    {
-
-        $slug = Str::slug($postTitle);
-        $exists = Post::where("slug", $slug)->first();
-        $counter = 1;
-
-        while ($exists) {
-            $newSlug = $slug . "-" . $counter;
-            $counter++;
-            $exists = Post::where("slug", $newSlug)->first();
-            if (!$exists) {
-                $slug = $newSlug;
-            }
-        }
-
-        return $slug;
     }
 
 }

@@ -7,7 +7,7 @@
             <div class="card">
                 <div class="card-header d-flex">Add a new post</div>
                 <div class="card-body">
-                    <form action="{{ route('admin.posts.store') }}" method="post">
+                    <form action="{{ route('admin.posts.store') }}" method="post" enctype="multipart/form-data">
                         @csrf
           
                         <div class="mb-3">
@@ -19,10 +19,18 @@
                           @enderror
                         </div>
 
-                        <div class="mb-3">
+                        {{-- <div class="mb-3">
                           <label>Image</label>
                           <input type="text" name="image" class="form-control @error('image') is-invalid @enderror"
                             placeholder="https://example.com" value="{{ old('image') }}">
+                          @error('image')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                          @enderror
+                        </div> --}}
+                        <div class="mb-3">
+                          <label>Image</label>
+                          <input type="file" name="image" class="form-control @error('image') is-invalid @enderror"
+                            placeholder="https://example.com">
                           @error('image')
                             <div class="invalid-feedback">{{ $message }}</div>
                           @enderror

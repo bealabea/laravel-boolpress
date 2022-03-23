@@ -44,7 +44,7 @@ export default {
     transform: scale(1.0);
     transition: all 0.5s;
     &:hover {
-        transform: scale(1.1) translate(0%, 10%);
+        transform: scale(1.1);
         transition: all 0.5s;
     }
 }

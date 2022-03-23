@@ -10,7 +10,14 @@
           </div>
 
           <div class="card-body">
-              <img class="img-fluid" src="{{$post->image}}" alt="">
+          @if (str_starts_with($post->image, 'https'))
+          <img class="img-fluid" src="{{$post->image}}" alt="">
+            <img class="img-fluid" src="{{ asset("storage/" . $post->image)}}" alt="">
+          @elseif ($post->image)
+          <img class="img-fluid" src="{{ asset("storage/" . $post->image)}}" alt="">
+          @else
+            <img class="img-fluid" src="https://www.logistec.com/wp-content/uploads/2017/12/placeholder.png" alt="">
+          @endif
             <div class="mb-3 fs-4">{{ $post->content }}</div>
 
             <div class="mb-3">{{$post->user->name}}</div>
