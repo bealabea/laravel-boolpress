@@ -12,7 +12,6 @@
           <div class="card-body">
           @if (str_starts_with($post->image, 'https'))
           <img class="img-fluid" src="{{$post->image}}" alt="">
-            <img class="img-fluid" src="{{ asset("storage/" . $post->image)}}" alt="">
           @elseif ($post->image)
           <img class="img-fluid" src="{{ asset("storage/" . $post->image)}}" alt="">
           @else

@@ -22,7 +22,7 @@ class PostController extends Controller {
 
     $posts->each(function ($post){
       if (str_starts_with($post->image, 'https')){
-          return $post->image;
+        $post->image;
       } else if($post->image){
         $post->image = asset('storage/' . $post->image);
       } else {
@@ -60,13 +60,13 @@ class PostController extends Controller {
       ->with(["tags", "user", "category"])
       ->firstOrFail();
 
-      if (str_starts_with($post->image, 'https')){
-        return $post->image;
+    if (str_starts_with($post->image, 'https')){
+      $post->image;
     } else if($post->image){
       $post->image = asset('storage/' . $post->image);
     } else {
       $post->image = "https://www.logistec.com/wp-content/uploads/2017/12/placeholder.png";
-    };
+    }
 
     if (!$post) {
       abort(404);

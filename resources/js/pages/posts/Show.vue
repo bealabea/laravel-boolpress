@@ -27,6 +27,7 @@ methods: {
 },
 mounted() {
     this.getPost();
+    console.log(this.post);
 }
 }
 
