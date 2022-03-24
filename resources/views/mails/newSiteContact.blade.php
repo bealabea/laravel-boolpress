@@ -7,6 +7,12 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>nuovo messaggio ricevuto da Contatti</h1>
+    <h1>nuovo Contatto</h1>
+    <ul>
+        <li>Name: {{$newContactInfo->name}}</li>
+        <li>Email: {{$newContactInfo->email}}</li>
+        <li>Message: {{$newContactInfo->message}}</li>
+    </ul>
+    <p></p>
 </body>
 </html>

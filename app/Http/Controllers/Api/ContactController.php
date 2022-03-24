@@ -16,7 +16,7 @@ class ContactController extends Controller
             'name' => 'required|string',
             'email' => 'required|email',
             'message' => 'required|string',
-            'attachment' => 'nullable'
+            'attachment' => 'nullable|file'
         ]
         );
         $newContact = new Contact();
@@ -28,7 +28,7 @@ class ContactController extends Controller
 
         $newContact->save();
 
-        Mail::to('admin@sito.com')->send(new NewSiteContactMail());
+        Mail::to('admin@sito.com')->send(new NewSiteContactMail($newContact));
 
         return response()->json($newContact);
     }
